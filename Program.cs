@@ -2,307 +2,351 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace aero
+namespace TP_aeroporto
 {
+    public class Voo
+    {
+        public int Id { get; set; }
+        public string Destino { get; set; }
+        public DateTime DataHora { get; set; }
+    }
+
     public class Passageiro
     {
         public string Nome { get; set; }
         public string CPF { get; set; }
         public string Telefone { get; set; }
-        public Voo numerovoo { get; set; }
-    }
-
-    public class Voo
-    {
-        public int Id { get; set; }
-        public string Destino { get; set; }
-        public DateTime Hora { get; set; }
+        public Voo Nvoo { get; set; }
     }
 
     class Program
     {
         static void Main(string[] args)
         {
-            Voo mg = new Voo()
+            //Insere cada destino
+            Voo destino1 = new Voo()
             {
-                Id = 01,
-                Destino = "Minas Gerais",
-                Hora = Convert.ToDateTime("11:10")
+                Id = 001,
+                Destino = "SÃO PAULO",
+                DataHora = Convert.ToDateTime("13:50")
             };
-            Voo sp = new Voo()
+            Voo destino2 = new Voo()
             {
-                Id = 02,
-                Destino = "São Paulo",
-                Hora = Convert.ToDateTime("16:20")
+                Id = 002,
+                Destino = "RECIFE",
+                DataHora = Convert.ToDateTime("20:00")
             };
-            Voo rs = new Voo()
+            Voo destino3 = new Voo()
             {
-                Id = 03,
-                Destino = "Rio Grande do Sul",
-                Hora = Convert.ToDateTime("20:20")
+                Id = 003,
+                Destino = "RIO DE JANEIRO",
+                DataHora = Convert.ToDateTime("21:00")
             };
-
+            //Cria uma lista com os voos
             List<Voo> voos = new List<Voo>();
-            voos.Add(mg);
-            voos.Add(sp);
-            voos.Add(rs);
+            voos.Add(destino1);
+            voos.Add(destino2);
+            voos.Add(destino3);
 
-            int posicao;
-            Queue espera = new Queue();
+            int posição;
+            Queue fila = new Queue();
             List<Passageiro> listaPassageiro = new List<Passageiro>();
 
             Passageiro passageiro = new Passageiro();
 
-            Passageiro porta1 = new Passageiro()
+            //Cria passageiros pré-definidos para não ter que cadastrar varios de uma vez, ao abrir o programa
+            Passageiro fake1 = new Passageiro()
             {
-                Nome = "Lucas Carlos Montanhês",
+                Nome = "MARY KENNETH KELLER",
                 CPF = "12345678910",
-                Telefone = "31995689781",
-                numerovoo = mg
+                Telefone = "31900000000",
+                Nvoo = destino1
             };
-            Passageiro porta2 = new Passageiro()
+
+            Passageiro fake2 = new Passageiro()
             {
-                Nome = "Luciana Madalena Katia",
+                Nome = "ADA AUGUSTA KING LOVELACE",
                 CPF = "12345678911",
-                Telefone = "11989546598",
-                numerovoo = rs
+                Telefone = "31900000001",
+                Nvoo = destino2
             };
-            Passageiro porta3 = new Passageiro()
+
+            Passageiro fake3 = new Passageiro()
             {
-                Nome = "Camila Luciana da Silva",
+                Nome = "JEAN SAMMET",
                 CPF = "12345678912",
-                Telefone = "62985478521",
-                numerovoo = sp
+                Telefone = "31900000002",
+                Nvoo = destino3
             };
-            Passageiro porta4 = new Passageiro()
+
+            Passageiro fake4 = new Passageiro()
             {
-                Nome = "Thiago Oliveira Claudio",
-                CPF = "65487915945",
-                Telefone = "64998755484",
-                numerovoo = mg
+                Nome = "GRACE HOPPER",
+                CPF = "12345678913",
+                Telefone = "31900000003",
+                Nvoo = destino1
             };
 
-            listaPassageiro.Add(porta1);
-            listaPassageiro.Add(porta2);
-            listaPassageiro.Add(porta3);
-            listaPassageiro.Add(porta4);
+            Passageiro fake5 = new Passageiro()
+            {
+                Nome = "MAGDALENA CARMEN FRIDA KAHLO",
+                CPF = "12345678914",
+                Telefone = "31900000004",
+                Nvoo = destino1
+            };
 
-            //Enqueue é usado para enfileirar as strings
-            espera.Enqueue(porta1);
-            espera.Enqueue(porta2);
-            espera.Enqueue(porta3);
-            espera.Enqueue(porta4);
+            //adciona os usuarios a lista e fila
+            listaPassageiro.Add(fake1);
+            listaPassageiro.Add(fake2);
+            listaPassageiro.Add(fake3);
+            listaPassageiro.Add(fake4);
+            listaPassageiro.Add(fake5);
+            fila.Enqueue(fake1);
+            fila.Enqueue(fake2);
+            fila.Enqueue(fake3);
+            fila.Enqueue(fake4);
+            fila.Enqueue(fake5);
 
             bool sair = false;
             do
             {
-                string Destino = "";
+                string pDestino = "";
                 DateTime aux;
-                for (int i = 0; i < voos.Count; i++)
+                for (int i = 0; i < voos.Count; i++)//define qual é o proximo voo
                 {
-                    Destino = mg.Destino;
-                    aux = mg.Hora;
-
-                    if (aux > sp.Hora)
+                    pDestino = destino1.Destino;
+                    aux = destino1.DataHora;
+                    if (aux > destino2.DataHora)
                     {
-                        Destino = sp.Destino;
+                        pDestino = destino2.Destino;
                     }
-                    else if (aux > rs.Hora)
+                    else if (aux > destino3.DataHora)
                     {
-                        Destino = rs.Destino;
+                        pDestino = destino3.Destino;
                     }
                 }
 
+                Console.WriteLine();
+                Console.WriteLine();
+
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("\n\tAEROPORTO INTERNACIONAL STAR ALLIANCE");
+                Console.WriteLine("\n" +
+                    "\t░░░░░░ AEROPORTO INTERNACIONAL STAR ALLIANCE ░░░░░░");
                 Console.ResetColor();
 
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\n\n" +
                     "\t╔══════════════════════════════ MENU PRINCIPAL ═══╗");
-                Console.ResetColor();
-
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine(
-                    "\t║  [F1] Lista de passageiros                      ║\n" +
-                    "\t║  [F2] Pesquisar passageiros por número de CPF   ║\n" +
-                    "\t║  [F3] Cadastrar novo passageiro                 ║\n" +
-                    "\t║  [F4] Excluir passageiro da lista               ║\n" +
-                    "\t║  [F5] Mostra fila de espera                     ║\n" +
-                    "\t║ [ESC] Sair                                      ║", Destino);
+                    "\t║  [F1] LISTA DE PASSAGEIROS                      ║\n" +
+                    "\t║  [F2] PESQUISAR PASSAGEIROS POR NÚMERO DE CPF   ║\n" +
+                    "\t║  [F3] CADASTRAR PASSAGEIRO                      ║\n" +
+                    "\t║  [F4] EXCLUIR PASSAGEIRO                        ║\n" +
+                    "\t║  [F5] FILA DE ESPERA                            ║\n" +
+                    "\t║ [ESC] SAIR                                      ║", pDestino);
                 Console.WriteLine("" +
                     "\t╚═════════════════════════════════════════════════╝");
                 Console.ResetColor();
+                ConsoleKeyInfo Menu = Console.ReadKey();
+                sair = Menu.Key == ConsoleKey.Escape;
 
-                ConsoleKeyInfo menu = Console.ReadKey();
-                sair = menu.Key == ConsoleKey.Escape;
-
-                if (menu.Key == ConsoleKey.F1)//verifica todos os passageiros na fila
+                if (Menu.Key == ConsoleKey.F1)//verifica todos os passageiros na fila
                 {
                     Console.Clear();
 
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine("\n\t▒▒▒▒▒▒ LISTAGEM DE PASSAGEIROS ▒▒▒▒▒▒");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n\t▒▒▒▒▒▒▒▒▒▒▒▒▒ LISTAGEM DE PASSAGEIROS ▒▒▒▒▒▒▒▒▒▒▒▒▒");
                     Console.ResetColor();
-
-                    posicao = 1;
-                    for (int i = 0; i < espera.Count; i++)
+                    
+                    for (int i = 0; i < fila.Count; i++)
                     {
-                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine("\t\n" +
-                            "\t" + posicao +
-                            "° PASSAGEIRO: \n" + "\tNome: {0} \n" +
-                            "\tCPF: {1} \n" +
-                            "\tNumero do Voo: {2} \n" +
-                            "\tDestino: {3} \n" +
-                            "\tTelefone: {4} \n" +
-                            "\tHorario: {5} \n",
-                            listaPassageiro[i].Nome, listaPassageiro[i].CPF, listaPassageiro[i].numerovoo.Id, listaPassageiro[i].numerovoo.Destino,
-                            listaPassageiro[i].Telefone, listaPassageiro[i].numerovoo.Hora.TimeOfDay);
-                        posicao++;
-                        Console.WriteLine();
+                            "\n\t¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                            "\tNOME DO PASSAGEIRO: {0} \n" +
+                            "\tCPF DO PASSAGEIRO: {1} \n" +
+                            "\tNÚMERO DO VÔO: {2} \n" +
+                            "\tDESTINO DO VÔO: {3} \n" +
+                            "\tTELEFONE: {4} \n" +
+                            "\tHORÁRIO DE SAÍDA: {5} \n",
+                            listaPassageiro[i].Nome, listaPassageiro[i].CPF, listaPassageiro[i].Nvoo.Id, listaPassageiro[i].Nvoo.Destino,
+                            listaPassageiro[i].Telefone, listaPassageiro[i].Nvoo.DataHora.TimeOfDay);
                         Console.ResetColor();
+
                     }
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\n\n\t» PRESSIONE [ESC] PARA RETORNAR AO MENU PRINCIPAL");
+
+                    Console.ReadKey();
+                    Console.Clear();
                 }
-                else if (menu.Key == ConsoleKey.F2)
+
+                else if (Menu.Key == ConsoleKey.F2)//pesquisa passageiro expecifico
                 {
                     Console.Clear();
 
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine("\n\t▒▒▒▒▒▒ PESQUISAR PASSAGEIROS POR NÚMERO DE CPF ▒▒▒▒▒▒");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n\t▒▒▒▒▒ PESQUISAR PASSAGEIROS POR NÚMERO DE CPF ▒▒▒▒▒");
                     Console.ResetColor();
 
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n\tINSIRA O CPF DO PASSAGEIRO: ");
+                    Console.ResetColor();
                     Console.Write("\t");
+
                     string CPF = Console.ReadLine();
                     for (int i = 0; i < listaPassageiro.Count && i < 5; i++)
                     {
                         if (CPF == listaPassageiro[i].CPF)
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkCyan;
-                            Console.WriteLine("\n" +
-                            "\n\tNome: {0} " +
-                            "\n\tCPF: {1} " +
-                            "\n\tNumero do Voo: {2} " +
-                            "\n\tDestino: {3} " +
-                            "\n\tTelefone: {4} " +
-                            "\n\tHorario: {5}",
-                            listaPassageiro[i].Nome, listaPassageiro[i].CPF, listaPassageiro[i].numerovoo.Id, listaPassageiro[i].numerovoo.Destino,
-                            listaPassageiro[i].Telefone, listaPassageiro[i].numerovoo.Hora.TimeOfDay);
-                            Console.WriteLine();
-                            Console.ResetColor();
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("\t\n" +
+                            "\tNOME DO PASSAGEIRO: {0} \n" +
+                            "\tCPF DO PASSAGEIRO: {1} \n" +
+                            "\tNÚMERO DO VÔO: {2} \n" +
+                            "\tDESTINO DO VÔO: {3} \n" +
+                            "\tTELEFONE: {4} \n" +
+                            "\tHORÁRIO DE SAÍDA: {5} \n",
+                            listaPassageiro[i].Nome, listaPassageiro[i].CPF, listaPassageiro[i].Nvoo.Id, listaPassageiro[i].Nvoo.Destino,
+                            listaPassageiro[i].Telefone, listaPassageiro[i].Nvoo.DataHora.TimeOfDay);
                         }
                     }
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n\n\t» PRESSIONE [ESC] PARA RETORNAR AO MENU PRINCIPAL");
+                    Console.ResetColor();
+
+                    Console.ReadKey();
+                    Console.Clear();
                 }
-                else if (menu.Key == ConsoleKey.F3)
+                else if (Menu.Key == ConsoleKey.F3)//cadastra um passageiro
                 {
                     Console.Clear();
 
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine("\n\t▒▒▒▒▒▒ CADASTRAR NOVO PASSAGEIRO ▒▒▒▒▒▒");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n\t▒▒▒▒▒▒▒▒▒▒▒▒ CADASTRAR NOVO PASSAGEIRO ▒▒▒▒▒▒▒▒▒▒▒▒");
                     Console.ResetColor();
 
+                    bool retornar = false;
                     do
                     {
-                        Passageiro cadastrado = new Passageiro();
+                        Passageiro passageiroCadastro = new Passageiro();
 
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("\n\tNOME DO PASSAGEIRO: ");
                         Console.ResetColor();
                         Console.Write("\t");
-                        cadastrado.Nome = Console.ReadLine();
+                        passageiroCadastro.Nome = Console.ReadLine();
 
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("\n\tCPF DO PASSAGEIRO: ");
                         Console.ResetColor();
                         Console.Write("\t");
-                        cadastrado.CPF = Console.ReadLine();
+                        passageiroCadastro.CPF = Console.ReadLine();
 
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
-                        Console.WriteLine("\n\tUF DE DESTINO DO VÔO: ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("\n\tINSIRA A UF DO DESTINO(RJ, SP OU RE): ");
                         Console.ResetColor();
                         Console.Write("\t");
-                        string numerovoo = Console.ReadLine();
+                        string Nvoo = Console.ReadLine();
 
-                        if (numerovoo == "MG")
+                        if (Nvoo == "SP")
                         {
-                            cadastrado.numerovoo = mg;
+                            passageiroCadastro.Nvoo = destino1;
                         }
-                        else if (numerovoo == "SP")
+                        else if (Nvoo == "RE")
                         {
-                            cadastrado.numerovoo = sp;
+                            passageiroCadastro.Nvoo = destino2;
                         }
-                        else if (numerovoo == "RS")
+                        else if (Nvoo == "RJ")
                         {
-                            cadastrado.numerovoo = rs;
+                            passageiroCadastro.Nvoo = destino3;
                         }
 
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("\n\tNÚMERO DE TELEFONE (INSIRA APENAS NÚMEROS): ");
                         Console.ResetColor();
                         Console.Write("\t");
                         passageiro.Telefone = Console.ReadLine();
 
-                        listaPassageiro.Add(cadastrado);
-                        espera.Enqueue(cadastrado);
+                        listaPassageiro.Add(passageiroCadastro);
+                        fila.Enqueue(passageiroCadastro);
 
-                        Console.WriteLine("\n\tPRESSIONE [ENTER] PARA CADASTRAR O PASSAGEIRO");
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.WriteLine("\n\n\tPRESSIONE [ENTER] PARA CONFIRMAR.");
                         Console.ReadLine();
-
-                        Console.ForegroundColor = ConsoleColor.DarkCyan;
-                        Console.WriteLine("\n\tPASSAGEIRO CADASTRADO COM SUCESSO.");
                         Console.ResetColor();
 
-                        Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("\n\tPASSAGEIRO CADASTRADO COM SUCESSO!\n");
+                        Console.ResetColor();
 
-                        ConsoleKey voltar = ConsoleKey.Enter;
-                        voltar = Console.ReadKey().Key;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("\n\t» PRESSIONE [ESC] PARA RETORNAR AO MENU PRINCIPAL");
+                        Console.WriteLine("\t» PRESSIONE [ENTER] PARA CADASTRAR UM NOVO PASSAGEIRO");
+                        Console.ResetColor();
 
-                    } while(sair);
+                        var finalizar = Console.ReadKey();
+                        retornar = finalizar.Key == ConsoleKey.Escape;
+                        Console.WriteLine();
+                        Console.Clear();
+
+                    } while (!retornar);
                 }
-
-                else if (menu.Key == ConsoleKey.F4)
+                else if (Menu.Key == ConsoleKey.F4)//remove passageiro da fila
                 {
                     Console.Clear();
 
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine("\n\t▒▒▒▒▒▒ EXCLUIR PASSAGEIRO DA LISTA ▒▒▒▒▒▒");
-
-                    //O código Dequeue é usado para desenfileirar
-                    espera.Dequeue();
-                    Console.WriteLine("\n\tINFORME O CPF DO PASSAGEIRO A SER REMOVIDO: ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n\t▒▒▒▒▒▒▒▒▒▒▒ EXCLUIR PASSAGEIRO DA LISTA ▒▒▒▒▒▒▒▒▒▒▒");
                     Console.ResetColor();
-                    Console.Write("\t");
+
+                    fila.Dequeue();
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    Console.WriteLine("\n\tPRESSIONE [ENTER] PARA EXCLUIR O ULTIMO PASSAGEIRO CADASTRADO");
+
                     Console.ReadLine();
 
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.WriteLine("\n\tPASSAGEIRO REMOVIDO COM SUCESSO.\n");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("\n\tPASSAGEIRO REMOVIDO COM SUCESSO\n");
+                    Console.Write("\t");
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\n\t» PRESSIONE [ESC] PARA RETORNAR AO MENU PRINCIPAL");
                     Console.ResetColor();
+                    
+                    Console.ReadKey();
+                    Console.Clear();
                 }
-                else if (menu.Key == ConsoleKey.F5)
+                
+                else if (Menu.Key == ConsoleKey.F5)
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n\t▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ LISTA DE ESPERA ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒");
+                    Console.ResetColor();
 
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine("\n\t▒▒▒▒▒▒ LISTA DE ESPERA ▒▒▒▒▒▒");
-
-                    posicao = 6;
-                    for (int i = 0; i > 5 && i < espera.Count; i++)
+                    posição = 6;
+                    for (int i = 0; i > 5 && i < fila.Count; i++)//mostra lista de espera
                     {
-                        Console.WriteLine("\n" + posicao +
-                            "°: " + "Nome: {0} " +
-                            "CPF: {1} " +
-                            "Numero do Voo: {2} " +
-                            "Destino: {3} " +
-                            "Telefone: {4} " +
-                            "Horario: {5}",
-                            listaPassageiro[i].Nome, listaPassageiro[i].CPF, listaPassageiro[i].numerovoo.Id, listaPassageiro[i].numerovoo.Destino,
-                            listaPassageiro[i].Telefone, listaPassageiro[i].numerovoo.Hora.TimeOfDay);
-                        posicao++;
-                        Console.WriteLine();
+                        Console.WriteLine("\n" + posição +
+                            "°: " + "NOME DO PASSAGEIRO: {0} " +
+                            "CPF DO PASSAGEIRO: {1} " +
+                            "NÚMERO DO VÔO: {2} " +
+                            "DESTINO: {3} " +
+                            "TELEFONE: {4} " +
+                            "HORÁRIO DE SAÍDA: {5}",
+                            listaPassageiro[i].Nome, listaPassageiro[i].CPF, listaPassageiro[i].Nvoo.Id, listaPassageiro[i].Nvoo.Destino, listaPassageiro[i].Telefone, listaPassageiro[i].Nvoo.DataHora.TimeOfDay);
+                        posição++;
                     }
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\n\t» PRESSIONE [ESC] PARA RETORNAR AO MENU PRINCIPAL");
+                    Console.ResetColor();
+                    Console.ReadKey();
+                    Console.Clear();
                 }
-            } while (sair);
-            Console.ReadKey();
+            } while (!sair);
         }
+        
     }
 }
